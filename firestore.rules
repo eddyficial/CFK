@@ -134,3 +134,4 @@ service cloud.firestore {
   }
 }
 // Trigger re-deployment to enable auth providers.
+// This comment is added to force a backend update.
