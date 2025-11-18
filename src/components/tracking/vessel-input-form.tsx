@@ -50,7 +50,7 @@ export default function VesselInputForm() {
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormControl>
-                <Input placeholder="Enter Container Number (e.g., MSKU1234567)" {...field} />
+                <Input placeholder="Enter Container Number (e.g., MSKU1234567)" {...field} className="text-base" />
               </FormControl>
               <FormMessage />
             </FormItem>
