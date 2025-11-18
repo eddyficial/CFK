@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,7 +13,7 @@ import {
 import { GoogleIcon } from '@/components/icons/google-icon';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { useAuth } from '@/firebase';
 
 export default function LoginPage() {
@@ -20,26 +21,33 @@ export default function LoginPage() {
   const auth = useAuth();
   const { toast } = useToast();
 
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          const user = result.user;
+          toast({
+            title: 'Login Successful',
+            description: `Welcome back, ${user.displayName}!`,
+          });
+          router.push('/');
+        }
+      } catch (error: any) {
+        console.error('Google Sign-in error after redirect', error);
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong.',
+          description: error.message || 'Could not sign in with Google.',
+        });
+      }
+    };
+    handleRedirectResult();
+  }, [auth, router, toast]);
+
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      toast({
-        title: 'Login Successful',
-        description: `Welcome back, ${user.displayName}!`,
-      });
-
-      router.push('/');
-    } catch (error: any) {
-      console.error('Google Sign-in error', error);
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: error.message || 'Could not sign in with Google.',
-      });
-    }
+    await signInWithRedirect(auth, provider);
   };
 
   return (
