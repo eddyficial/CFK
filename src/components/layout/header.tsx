@@ -1,10 +1,16 @@
+
+'use client';
+
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { Home, Package, Search } from 'lucide-react';
+import { Home, Package, Search, User } from 'lucide-react';
 import { Logo } from '../icons/logo';
 import { UserNav } from '../auth/user-nav';
+import { useUser } from '@/firebase';
 
 export default function Header() {
+  const { user } = useUser();
+
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm">
       <div className="container flex items-center justify-between p-4 mx-auto">
@@ -25,6 +31,11 @@ export default function Header() {
           <NavButton href="/" icon={<Home className="h-5 w-5" />} label="Home" />
           <NavButton href="#" icon={<Package className="h-5 w-5" />} label="Quote" />
           <NavButton href="#" icon={<Search className="h-5 w-5" />} label="Track" />
+          {user ? (
+             <NavButton href="#" icon={<User className="h-5 w-5" />} label="Profile" />
+          ) : (
+            <NavButton href="/login" icon={<User className="h-5 w-5" />} label="Login" />
+          )}
       </div>
     </header>
   );
