@@ -5,6 +5,7 @@ import MapDisplay from './map-display';
 import RouteAnalysis from './route-analysis';
 import VesselDetails from './vessel-details';
 import { Skeleton } from '../ui/skeleton';
+import { predictETA, ETAPredictionOutput } from '@/ai/ai-eta-predictions';
 
 interface ContainerData {
   id: string;
@@ -20,27 +21,42 @@ export default function TrackingDashboard({ containerId }: { containerId: string
   const [aiAnalysis, setAiAnalysis] = useState<string>('');
 
   useEffect(() => {
-    setLoading(true);
-    // Simulate API call
-    const timer = setTimeout(() => {
-      // Mock data generation
-      const statuses: ContainerData['status'][] = ['In Transit', 'Docked', 'At Anchor'];
-      const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-      const mockData: ContainerData = {
-        id: containerId.toUpperCase(),
-        status: randomStatus,
-        location: '14.48 N, 126.12 E',
-        speed: '18.2 knots',
-        eta: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toDateString(),
-      };
-      setContainerData(mockData);
+    async function getETAPrediction() {
+      setLoading(true);
+      try {
+        const input = {
+          containerNumber: containerId,
+          currentLocation: '14.48 N, 126.12 E',
+          destinationPort: 'Mombasa, Kenya',
+          historicalData: 'On-time for the last 3 voyages on this route.',
+        };
+        const prediction: ETAPredictionOutput = await predictETA(input);
 
-      const mockAnalysis = `Based on current weather patterns and port congestion data, the estimated time of arrival is accurate. We've identified a potential optimization by adjusting the route slightly to avoid a developing storm system, which could save approximately 3 hours of travel time. We recommend the captain review the suggested course correction.`;
-      setAiAnalysis(mockAnalysis);
-      setLoading(false);
-    }, 2000);
+        // Map the AI output to the existing data structures
+        const statuses: ContainerData['status'][] = ['In Transit', 'Docked', 'At Anchor'];
+        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
-    return () => clearTimeout(timer);
+        const newContainerData: ContainerData = {
+          id: containerId.toUpperCase(),
+          status: randomStatus,
+          location: input.currentLocation,
+          speed: '18.2 knots', // Placeholder speed
+          eta: prediction.estimatedTimeOfArrival,
+        };
+
+        setContainerData(newContainerData);
+        setAiAnalysis(prediction.routeOptimizations);
+      } catch (error) {
+        console.error('Error fetching ETA prediction:', error);
+        // Optionally set an error state to show in the UI
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (containerId) {
+      getETAPrediction();
+    }
   }, [containerId]);
   
   if (loading) {
@@ -62,7 +78,7 @@ export default function TrackingDashboard({ containerId }: { containerId: string
   }
 
   if (!containerData) {
-    return <div>Error loading container data.</div>;
+    return <div>Error loading container data. Please try again.</div>;
   }
 
   return (
