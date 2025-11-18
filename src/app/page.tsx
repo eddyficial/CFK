@@ -1,86 +1,69 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
-import { Phone, Shield, Truck } from 'lucide-react';
-import Link from 'next/link';
+import VesselInputForm from '@/components/tracking/vessel-input-form';
+import { Globe, MapPin, Phone } from 'lucide-react';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
+  const heroImage = PlaceHolderImages.find(img => img.id === 'shipping-port-hero');
+
   return (
     <div className="flex-1 w-full bg-background text-foreground overflow-auto">
-      <div className="container px-4 md:px-6 py-6 space-y-8">
-        <Carousel
-          opts={{
-            align: 'start',
-          }}
-          className="w-full"
-        >
-          <CarouselContent>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/1">
-                <div className="p-1">
-                  <Card className="bg-card/80">
-                    <CardContent className="flex flex-col items-center justify-center p-6 space-y-4 text-center">
-                      <div className="p-4 bg-accent/10 rounded-lg">
-                        <Phone className="h-10 w-10 text-accent" />
-                      </div>
-                      <h3 className="text-xl font-bold">24/7 Support</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Expert assistance whenever you need it
-                      </p>
-                      <Button variant="link" className="text-accent">
-                        Tap to explore
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2" />
-          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2" />
-        </Carousel>
-
-        <div className="grid grid-cols-2 gap-4">
-          <InfoCard
-            icon={<Shield className="h-6 w-6" />}
-            title="TRACK"
-            description="Real-time updates"
+      <div className="relative h-[60vh] flex items-center justify-center text-center text-white px-4">
+        {heroImage && (
+          <Image
+            src={heroImage.imageUrl}
+            alt={heroImage.description}
+            fill
+            className="object-cover brightness-50"
+            data-ai-hint={heroImage.imageHint}
+            priority
           />
-          <InfoCard
-            icon={<Truck className="h-6 w-6" />}
-            title="SUPPORT"
-            description="Get help 24/7"
-          />
+        )}
+        <div className="relative z-10 space-y-4">
+          <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-wider uppercase">
+            Chauffeurs Kenya Freight
+          </h1>
+          <p className="text-lg md:text-xl font-light">
+            Moving Dreams Across Continents
+          </p>
         </div>
+      </div>
 
-        <Card className="bg-card/80">
-          <CardContent className="p-6 text-center space-y-4">
-            <h3 className="text-xl font-bold">Access Your Dashboard</h3>
-            <p className="text-sm text-muted-foreground">
-              Sign in to track shipments, view quotes, and manage your account
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
-                <Link href="#">Sign In</Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary" className="font-bold">
-                <Link href="#">Create Account</Link>
-              </Button>
-            </div>
+      <div className="container px-4 md:px-6 -mt-16 relative z-20">
+        <Card className="bg-card/90 backdrop-blur-sm shadow-2xl">
+          <CardContent className="p-6 space-y-4">
+            <h2 className="text-xl font-bold text-center font-headline">Track Your Shipment</h2>
+            <VesselInputForm />
           </CardContent>
         </Card>
+      </div>
+
+      <div className="container px-4 md:px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <FeatureCard
+            icon={<Phone className="h-8 w-8" />}
+            title="24/7 Support"
+            description="Expert assistance whenever you need it, ensuring your peace of mind."
+          />
+          <FeatureCard
+            icon={<MapPin className="h-8 w-8" />}
+            title="Real-time Tracking"
+            description="Live updates on your shipment's location and status from origin to destination."
+          />
+          <FeatureCard
+            icon={<Globe className="h-8 w-8" />}
+            title="Global Coverage"
+            description="Extensive network of shipping lanes and partners across the world."
+          />
+        </div>
       </div>
     </div>
   );
 }
 
-function InfoCard({
+function FeatureCard({
   icon,
   title,
   description,
@@ -90,16 +73,13 @@ function InfoCard({
   description: string;
 }) {
   return (
-    <Card className="bg-card/80 relative overflow-hidden">
-      <CardContent className="p-4 flex flex-col items-center text-center space-y-2">
-        <div className="absolute inset-0 bg-red-500/10 blur-2xl"></div>
-        <div className="relative z-10 p-2 bg-red-500/20 rounded-lg">
+    <Card className="bg-card/80 text-center">
+      <CardContent className="p-6 space-y-3">
+        <div className="inline-flex items-center justify-center p-3 bg-accent/10 text-accent rounded-lg">
           {icon}
         </div>
-        <h4 className="font-bold text-lg relative z-10">{title}</h4>
-        <p className="text-xs text-muted-foreground relative z-10">
-          {description}
-        </p>
+        <h3 className="text-lg font-bold font-headline">{title}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
       </CardContent>
     </Card>
   );

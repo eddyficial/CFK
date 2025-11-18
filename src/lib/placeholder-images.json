@@ -5,6 +5,12 @@
       "description": "A placeholder world map for vessel tracking.",
       "imageUrl": "https://images.unsplash.com/photo-1524661135-423995f22d0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3b3JsZCUyMG1hcHxlbnwwfHx8fDE3NjM0MTAyMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "world map"
+    },
+    {
+      "id": "shipping-port-hero",
+      "description": "A busy shipping port with containers and cranes at sunset.",
+      "imageUrl": "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaGlwcGluZyUyMHBvcnR8ZW58MHx8fHwxNzYzNDk5MjU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "shipping port"
     }
   ]
 }
