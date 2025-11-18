@@ -22,9 +22,8 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
+    getRedirectResult(auth)
+      .then((result) => {
         if (result) {
           const user = result.user;
           toast({
@@ -33,16 +32,15 @@ export default function LoginPage() {
           });
           router.push('/');
         }
-      } catch (error: any) {
+      })
+      .catch((error) => {
         console.error('Google Sign-in error after redirect', error);
         toast({
           variant: 'destructive',
           title: 'Uh oh! Something went wrong.',
           description: error.message || 'Could not sign in with Google.',
         });
-      }
-    };
-    handleRedirectResult();
+      });
   }, [auth, router, toast]);
 
   const handleLogin = async () => {
