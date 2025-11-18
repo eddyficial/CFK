@@ -1,35 +1,33 @@
 import Link from 'next/link';
-import { Ship } from 'lucide-react';
-import { UserNav } from '@/components/auth/user-nav';
 import { Button } from '../ui/button';
+import { Home, Package, Search, User } from 'lucide-react';
+import { Logo } from '../icons/logo';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur-sm">
-      <div className="container flex h-16 items-center px-4 md:px-6">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-lg font-bold md:text-xl font-headline text-primary"
-        >
-          <Ship className="h-6 w-6 text-accent" />
-          <span>ContainerTrack</span>
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm">
+      <div className="container flex flex-col items-center justify-center p-4 mx-auto">
+        <Link href="/" className="mb-4">
+          <Logo className="h-10 w-auto text-white" />
         </Link>
-        <nav className="ml-auto flex items-center space-x-4">
-          <Button variant="ghost" asChild>
-            <Link href="/">Home</Link>
-          </Button>
-          <Button variant="ghost" asChild>
-            <Link href="#">About</Link>
-          </Button>
-          <Button variant="ghost" asChild>
-            <Link href="#">Services</Link>
-          </Button>
-          <Button variant="ghost" asChild>
-            <Link href="#">Contact</Link>
-          </Button>
-          <UserNav />
+        <nav className="flex items-center justify-center space-x-6 w-full">
+          <NavButton href="/" icon={<Home className="h-5 w-5" />} label="Home" />
+          <NavButton href="#" icon={<Package className="h-5 w-5" />} label="Quote" />
+          <NavButton href="#" icon={<Search className="h-5 w-5" />} label="Track" />
+          <NavButton href="/login" icon={<User className="h-5 w-5" />} label="Sign In" />
         </nav>
       </div>
     </header>
   );
+}
+
+function NavButton({ href, icon, label }: { href: string, icon: React.ReactNode, label: string }) {
+  return (
+    <Button variant="ghost" asChild className="flex flex-col items-center justify-center h-auto p-2 text-xs text-white">
+      <Link href={href}>
+        {icon}
+        <span>{label}</span>
+      </Link>
+    </Button>
+  )
 }
