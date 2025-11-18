@@ -50,13 +50,13 @@ export default function VesselInputForm() {
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormControl>
-                <Input placeholder="Enter Container Number (e.g., MSKU1234567)" {...field} className="text-base" />
+                <Input placeholder="Enter Container Number (e.g., MSKU1234567)" {...field} className="text-base h-12" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+        <Button type="submit" className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground">
           Track
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
