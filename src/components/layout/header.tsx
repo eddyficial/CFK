@@ -16,7 +16,7 @@ export default function Header() {
         <nav className="hidden md:flex items-center space-x-2">
           <NavLink href="/" label="Home" />
           <NavLink href="#" label="Services" />
-          <NavLink href="#" label="Track" />
+          <NavLink href="/track" label="Track" />
           <NavLink href="#" label="Contact" />
         </nav>
         <div className="flex items-center space-x-2">
