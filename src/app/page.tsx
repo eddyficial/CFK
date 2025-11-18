@@ -10,10 +10,10 @@ export default function Home() {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-primary">
-                  VesselTrack
+                  ContainerTrack
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Real-time container tracking with AI-powered insights. Enter your vessel number to get started.
+                  Real-time container tracking with AI-powered insights. Enter your container number to get started.
                 </p>
               </div>
               <div className="w-full max-w-sm">

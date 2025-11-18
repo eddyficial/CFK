@@ -1,9 +1,9 @@
 'use server';
 
 /**
- * @fileOverview This file defines a Genkit flow for predicting the estimated time of arrival (ETA) of a vessel.
+ * @fileOverview This file defines a Genkit flow for predicting the estimated time of arrival (ETA) of a shipping container.
  *
- * - predictETA - A function that takes vessel information and predicts the ETA.
+ * - predictETA - A function that takes container information and predicts the ETA.
  * - ETAPredictionInput - The input type for the predictETA function.
  * - ETAPredictionOutput - The return type for the predictETA function.
  */
@@ -12,10 +12,10 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ETAPredictionInputSchema = z.object({
-  vesselNumber: z.string().describe('The vessel number to track.'),
-  currentLocation: z.string().describe('The current location of the vessel.'),
-  destinationPort: z.string().describe('The destination port of the vessel.'),
-  historicalData: z.string().describe('Historical data of the vessel route and speed.'),
+  containerNumber: z.string().describe('The container number to track.'),
+  currentLocation: z.string().describe('The current location of the container.'),
+  destinationPort: z.string().describe('The destination port of the container.'),
+  historicalData: z.string().describe('Historical data of the route and speed.'),
 });
 
 export type ETAPredictionInput = z.infer<typeof ETAPredictionInputSchema>;
@@ -35,12 +35,12 @@ const prompt = ai.definePrompt({
   name: 'etaPredictionPrompt',
   input: {schema: ETAPredictionInputSchema},
   output: {schema: ETAPredictionOutputSchema},
-  prompt: `You are an AI assistant specialized in predicting the estimated time of arrival (ETA) for shipping vessels.
+  prompt: `You are an AI assistant specialized in predicting the estimated time of arrival (ETA) for shipping containers.
 
-  Analyze the vessel's current location, historical data, and potential route options to predict the ETA at the destination port.
+  Analyze the container's current location, historical data, and potential route options to predict the ETA at the destination port.
   Also, suggest potential route optimizations to improve the ETA.
 
-Vessel Number: {{{vesselNumber}}}
+Container Number: {{{containerNumber}}}
 Current Location: {{{currentLocation}}}
 Destination Port: {{{destinationPort}}}
 Historical Data: {{{historicalData}}}

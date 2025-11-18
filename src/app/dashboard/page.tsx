@@ -6,16 +6,16 @@ export default function DashboardPage({
   searchParams,
 }: {
   searchParams?: {
-    vesselId?: string;
+    containerId?: string;
   };
 }) {
-  const vesselId = searchParams?.vesselId;
+  const containerId = searchParams?.containerId;
 
-  if (!vesselId) {
+  if (!containerId) {
     return (
       <div className="container py-10 px-4 md:px-6 text-center">
         <h1 className="text-2xl font-bold font-headline text-destructive">Invalid Request</h1>
-        <p className="text-muted-foreground">Please provide a vessel number to track.</p>
+        <p className="text-muted-foreground">Please provide a container number to track.</p>
       </div>
     );
   }
@@ -23,7 +23,7 @@ export default function DashboardPage({
   return (
     <div className="container py-10 px-4 md:px-6">
       <Suspense fallback={<DashboardSkeleton />}>
-        <TrackingDashboard vesselId={vesselId} />
+        <TrackingDashboard containerId={containerId} />
       </Suspense>
     </div>
   );

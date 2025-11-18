@@ -17,8 +17,8 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 
 const FormSchema = z.object({
-  vesselId: z.string().min(5, {
-    message: 'Vessel number must be at least 5 characters.',
+  containerId: z.string().min(5, {
+    message: 'Container number must be at least 5 characters.',
   }),
 });
 
@@ -29,16 +29,16 @@ export default function VesselInputForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      vesselId: '',
+      containerId: '',
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: 'Tracking vessel...',
-      description: `Searching for vessel: ${data.vesselId}`,
+      title: 'Tracking container...',
+      description: `Searching for container: ${data.containerId}`,
     });
-    router.push(`/dashboard?vesselId=${data.vesselId}`);
+    router.push(`/dashboard?containerId=${data.containerId}`);
   }
 
   return (
@@ -46,11 +46,11 @@ export default function VesselInputForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full items-start space-x-2">
         <FormField
           control={form.control}
-          name="vesselId"
+          name="containerId"
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormControl>
-                <Input placeholder="Enter Vessel Number (e.g., IMO9462757)" {...field} />
+                <Input placeholder="Enter Container Number (e.g., MSKU1234567)" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

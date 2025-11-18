@@ -7,7 +7,7 @@ import {
 import { Anchor, Clock, Gauge, MapPin, Tag } from 'lucide-react';
 import { Badge } from '../ui/badge';
 
-interface VesselData {
+interface ContainerData {
   id: string;
   status: 'In Transit' | 'Docked' | 'At Anchor';
   location: string;
@@ -21,17 +21,17 @@ const statusColors = {
   'At Anchor': 'bg-yellow-500',
 };
 
-export default function VesselDetails({ data }: { data: VesselData }) {
+export default function VesselDetails({ data }: { data: ContainerData }) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline">Vessel Details</CardTitle>
+        <CardTitle className="font-headline">Container Details</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Tag className="h-5 w-5" />
-            <span>Vessel Number</span>
+            <span>Container Number</span>
           </div>
           <span className="font-medium text-foreground">{data.id}</span>
         </div>

@@ -6,8 +6,8 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 
 export const metadata: Metadata = {
-  title: 'VesselTrack',
-  description: 'Real-time shipping vessel tracking and route analysis.',
+  title: 'ContainerTrack',
+  description: 'Real-time shipping container tracking and route analysis.',
 };
 
 export default function RootLayout({
