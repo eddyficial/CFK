@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { ArrowRight, Box, Ship, Truck } from 'lucide-react';
@@ -74,7 +74,7 @@ export default function Home() {
             title="We Pick Up or You Drop Off"
             description="We can collect from your doorstep, or you can drop off your goods at one of our UK locations."
           />
-          <HowItWorksStep_
+          <HowItWorksStep
             icon={<Ship className="h-10 w-10" />}
             step="3"
             title="We Ship & Clear"
@@ -87,33 +87,6 @@ export default function Home() {
 }
 
 function HowItWorksStep({
-  icon,
-  step,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  step: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="flex flex-col items-center space-y-4">
-      <div className="relative">
-        <div className="flex items-center justify-center h-20 w-20 bg-accent/10 text-accent rounded-full">
-          {icon}
-        </div>
-        <div className="absolute -top-2 -right-2 flex items-center justify-center h-8 w-8 bg-primary text-primary-foreground rounded-full font-bold">
-          {step}
-        </div>
-      </div>
-      <h3 className="text-xl font-bold font-headline">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </div>
-  );
-}
-
-function HowItWorksStep_({
   icon,
   step,
   title,
