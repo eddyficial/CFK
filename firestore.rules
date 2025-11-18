@@ -133,3 +133,4 @@ service cloud.firestore {
     }
   }
 }
+// Trigger re-deployment to enable auth providers.
