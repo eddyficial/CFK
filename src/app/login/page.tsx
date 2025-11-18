@@ -12,26 +12,34 @@ import {
 import { GoogleIcon } from '@/components/icons/google-icon';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useAuth } from '@/firebase';
 
 export default function LoginPage() {
   const router = useRouter();
+  const auth = useAuth();
   const { toast } = useToast();
 
-  const handleLogin = () => {
-    // Simulate Google login
-    const user = {
-      name: 'Test User',
-      email: 'user@example.com',
-    };
-    localStorage.setItem('user', JSON.stringify(user));
+  const handleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-    toast({
-      title: 'Login Successful',
-      description: 'Welcome back!',
-    });
+      toast({
+        title: 'Login Successful',
+        description: `Welcome back, ${user.displayName}!`,
+      });
 
-    router.push('/');
-    router.refresh(); // Forces a refresh to update the header state
+      router.push('/');
+    } catch (error: any) {
+      console.error('Google Sign-in error', error);
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: error.message || 'Could not sign in with Google.',
+      });
+    }
   };
 
   return (
@@ -40,7 +48,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-headline">Login</CardTitle>
           <CardDescription>
-            Sign in to your VesselTrack account to access all features.
+            Sign in to your Chauffeurs Kenya Freight account to access all features.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">

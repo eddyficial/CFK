@@ -13,24 +13,31 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useAuth, useUser } from '@/firebase';
+import { signOut } from 'firebase/auth';
 
 export function UserNav() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, isUserLoading } = useUser();
+  const auth = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    setIsLoggedIn(!!user);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    setIsLoggedIn(false);
+  const handleLogout = async () => {
+    await signOut(auth);
     router.push('/');
   };
 
-  if (!isLoggedIn) {
+  if (isUserLoading) {
+    // You might want to show a loading spinner here
+    return (
+      <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Avatar className="h-9 w-9">
+          <AvatarFallback>U</AvatarFallback>
+        </Avatar>
+      </Button>
+    );
+  }
+
+  if (!user) {
     return (
       <Button asChild variant="secondary">
         <Link href="/login">Login</Link>
@@ -43,17 +50,17 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="https://picsum.photos/seed/user-avatar/40/40" alt="@user" data-ai-hint="person face" />
-            <AvatarFallback>U</AvatarFallback>
+            <AvatarImage src={user.photoURL || `https://picsum.photos/seed/${user.uid}/40/40`} alt={user.displayName || 'User'} data-ai-hint="person face" />
+            <AvatarFallback>{user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">User</p>
+            <p className="text-sm font-medium leading-none">{user.displayName}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              user@example.com
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
