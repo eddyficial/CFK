@@ -1,16 +1,19 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import VesselInputForm from '@/components/tracking/vessel-input-form';
-import { Globe, MapPin, Phone } from 'lucide-react';
-import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { ArrowRight, Box, Ship, Truck } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Home() {
-  const heroImage = PlaceHolderImages.find(img => img.id === 'shipping-port-hero');
+  const heroImage = PlaceHolderImages.find(
+    (img) => img.id === 'shipping-port-hero'
+  );
 
   return (
     <div className="flex-1 w-full bg-background text-foreground overflow-auto">
-      <div className="relative h-[60vh] flex items-center justify-center text-center text-white px-4">
+      {/* Hero Section */}
+      <div className="relative h-[70vh] flex items-center justify-start text-white">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
@@ -21,41 +24,61 @@ export default function Home() {
             priority
           />
         )}
-        <div className="relative z-10 space-y-4">
+        <div className="relative z-10 container px-4 md:px-6 space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-wider uppercase">
-            Chauffeurs Kenya Freight
+            Ship to East Africa
           </h1>
-          <p className="text-lg md:text-xl font-light">
-            Moving Dreams Across Continents
+          <p className="text-lg md:text-xl max-w-2xl">
+            Reliable and affordable freight services from the UK to Kenya,
+            Uganda, and Tanzania. Get your quote in minutes.
           </p>
+          <Card className="max-w-lg bg-card/80 backdrop-blur-sm">
+            <CardContent className="p-6">
+              <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input placeholder="Your Location (e.g., London)" />
+                <Input placeholder="Destination (e.g., Nairobi)" />
+                <Input
+                  placeholder="What are you shipping?"
+                  className="md:col-span-2"
+                />
+                <Button
+                  type="submit"
+                  className="md:col-span-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+                >
+                  Get a Free Quote
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      <div className="container px-4 md:px-6 -mt-16 relative z-20">
-        <Card className="bg-card/90 backdrop-blur-sm shadow-2xl">
-          <CardContent className="p-6 space-y-4">
-            <h2 className="text-xl font-bold text-center font-headline">Track Your Shipment</h2>
-            <VesselInputForm />
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="container px-4 md:px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <FeatureCard
-            icon={<Phone className="h-8 w-8" />}
-            title="24/7 Support"
-            description="Expert assistance whenever you need it, ensuring your peace of mind."
+      {/* How It Works Section */}
+      <div className="container px-4 md:px-6 py-16 text-center">
+        <h2 className="text-3xl font-bold font-headline mb-2">How It Works</h2>
+        <p className="text-muted-foreground mb-10 max-w-2xl mx-auto">
+          We make shipping to East Africa simple and hassle-free. Here are
+          the three easy steps to get your goods on their way.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <HowItWorksStep
+            icon={<Box className="h-10 w-10" />}
+            step="1"
+            title="Get a Quote & Book"
+            description="Provide details about your shipment and book your preferred shipping method (Air or Sea)."
           />
-          <FeatureCard
-            icon={<MapPin className="h-8 w-8" />}
-            title="Real-time Tracking"
-            description="Live updates on your shipment's location and status from origin to destination."
+          <HowItWorksStep
+            icon={<Truck className="h-10 w-10" />}
+            step="2"
+            title="We Pick Up or You Drop Off"
+            description="We can collect from your doorstep, or you can drop off your goods at one of our UK locations."
           />
-          <FeatureCard
-            icon={<Globe className="h-8 w-8" />}
-            title="Global Coverage"
-            description="Extensive network of shipping lanes and partners across the world."
+          <HowItWorksStep_
+            icon={<Ship className="h-10 w-10" />}
+            step="3"
+            title="We Ship & Clear"
+            description="We handle the entire process, including customs clearance, until your shipment reaches its destination."
           />
         </div>
       </div>
@@ -63,24 +86,56 @@ export default function Home() {
   );
 }
 
-function FeatureCard({
+function HowItWorksStep({
   icon,
+  step,
   title,
   description,
 }: {
   icon: React.ReactNode;
+  step: string;
   title: string;
   description: string;
 }) {
   return (
-    <Card className="bg-card/80 text-center">
-      <CardContent className="p-6 space-y-3">
-        <div className="inline-flex items-center justify-center p-3 bg-accent/10 text-accent rounded-lg">
+    <div className="flex flex-col items-center space-y-4">
+      <div className="relative">
+        <div className="flex items-center justify-center h-20 w-20 bg-accent/10 text-accent rounded-full">
           {icon}
         </div>
-        <h3 className="text-lg font-bold font-headline">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </CardContent>
-    </Card>
+        <div className="absolute -top-2 -right-2 flex items-center justify-center h-8 w-8 bg-primary text-primary-foreground rounded-full font-bold">
+          {step}
+        </div>
+      </div>
+      <h3 className="text-xl font-bold font-headline">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
+  );
+}
+
+function HowItWorksStep_({
+  icon,
+  step,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  step: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex flex-col items-center space-y-4">
+      <div className="relative">
+        <div className="flex items-center justify-center h-20 w-20 bg-accent/10 text-accent rounded-full">
+          {icon}
+        </div>
+        <div className="absolute -top-2 -right-2 flex items-center justify-center h-8 w-8 bg-primary text-primary-foreground rounded-full font-bold">
+          {step}
+        </div>
+      </div>
+      <h3 className="text-xl font-bold font-headline">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
   );
 }
