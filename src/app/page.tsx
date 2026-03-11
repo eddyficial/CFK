@@ -1,5 +1,4 @@
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import Image from 'next/image';
 import Link from 'next/link';
 import VesselInputForm from '@/components/tracking/vessel-input-form';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,13 +15,10 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center text-white overflow-hidden">
         {heroImage && (
-          <Image
+          <img
             src={heroImage.imageUrl}
             alt={heroImage.description}
-            fill
-            className="object-cover brightness-[0.3]"
-            data-ai-hint={heroImage.imageHint}
-            priority
+            className="absolute inset-0 w-full h-full object-cover brightness-[0.3]"
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background z-[1]" />
