@@ -1,13 +1,28 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import WhatsAppButton from '@/components/whatsapp-button';
+import PWARegister from '@/components/pwa-register';
 
 export const metadata: Metadata = {
-  title: 'Chauffeurs Kenya Freight',
-  description: 'Moving Dreams Across Continents',
+  title: 'Chauffeurs Kenya Freight | Global Freight Delivered',
+  description: 'Real-time container tracking and freight solutions connecting the world to East Africa. Moving Dreams Across Continents.',
+  manifest: '/CFK/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'CKF',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#dc2626',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -22,12 +37,15 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+        <link rel="apple-touch-icon" href="/CFK/icons/icon-192.svg" />
       </head>
       <body className={cn('font-body antialiased min-h-screen flex flex-col bg-background')}>
         <Header />
         <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
+        <WhatsAppButton />
         <Toaster />
+        <PWARegister />
       </body>
     </html>
   );
