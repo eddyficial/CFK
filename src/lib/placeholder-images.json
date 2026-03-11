@@ -9,7 +9,7 @@
     {
       "id": "shipping-port-hero",
       "description": "A large cargo container ship sailing across the ocean.",
-      "imageUrl": "https://images.unsplash.com/photo-1494412574643-ff11b0a5eb19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1920",
+      "imageUrl": "https://images.unsplash.com/photo-1577993108031-52a05a705a2f?w=1920&q=80&fit=crop",
       "imageHint": "cargo ship ocean"
     }
   ]

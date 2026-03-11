@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { Logo } from '../icons/logo';
-import { Menu, X } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -14,7 +13,16 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const handleShare = async () => {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    const title = 'Chauffeurs Freight Kenya - Global Freight Delivered';
+    const text = 'Track your shipments in real-time with Chauffeurs Freight Kenya.';
+    if (navigator.share) {
+      try { await navigator.share({ title, text, url }); } catch {}
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/30">
@@ -32,44 +40,19 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <Button asChild className="hidden md:inline-flex bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+        <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={handleShare}
+            className="flex items-center justify-center h-9 w-9 rounded-lg hover:bg-secondary text-foreground/70 hover:text-foreground transition-colors"
+            aria-label="Share"
+          >
+            <Share2 className="h-4 w-4" />
+          </button>
+          <Button asChild className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
             <Link href="/quote">Get a Quote</Link>
           </Button>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-secondary transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
         </div>
       </div>
-
-      {/* Mobile nav */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-border/30 bg-background/95 backdrop-blur-md animate-fade-in-up">
-          <nav className="container py-4 flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="px-4 py-3 rounded-lg text-foreground/80 hover:text-foreground hover:bg-secondary/50 transition-colors font-medium"
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="mt-2 px-4">
-              <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                <Link href="/quote" onClick={() => setMobileOpen(false)}>Get a Quote</Link>
-              </Button>
-            </div>
-          </nav>
-        </div>
-      )}
     </header>
   );
 }

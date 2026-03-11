@@ -4,8 +4,8 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import BottomNav from '@/components/layout/bottom-nav';
 import WhatsAppButton from '@/components/whatsapp-button';
-import ShareButton from '@/components/share-button';
 import PWARegister from '@/components/pwa-register';
 import InstallPrompt from '@/components/install-prompt';
 
@@ -46,7 +46,7 @@ export default function RootLayout({
         <InstallPrompt />
         <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
-        <ShareButton />
+        <BottomNav />
         <WhatsAppButton />
         <Toaster />
         <PWARegister />
