@@ -79,8 +79,8 @@ export default function ContactPage() {
           </Card>
 
           <div className="lg:col-span-2 space-y-4">
-            <InfoCard icon={<Mail className="h-5 w-5" />} title="Email" detail="info@chauffeurskenya.com" sub="We respond within 24 hours" />
-            <InfoCard icon={<Phone className="h-5 w-5" />} title="Phone" detail="+1 (972) 815-5863" sub="Mon-Fri, 8 AM - 6 PM EAT" />
+            <InfoCard icon={<Mail className="h-5 w-5" />} title="Email" detail="info@chauffeurskenya.com" sub="We respond within 24 hours" href="mailto:info@chauffeurskenya.com" />
+            <InfoCard icon={<Phone className="h-5 w-5" />} title="Phone" detail="+1 (972) 815-5863" sub="Mon-Fri, 8 AM - 6 PM EAT" href="tel:+19728155863" />
             <InfoCard icon={<MapPin className="h-5 w-5" />} title="Office" detail="Mombasa, Kenya" sub="Port Reitz Area" />
             <InfoCard icon={<MessageCircle className="h-5 w-5" />} title="WhatsApp" detail="David Owuori" sub="Quick responses for urgent shipments" href="https://wa.me/19728155863" />
 

@@ -33,7 +33,7 @@ export default function Footer() {
           <h4 className="font-bold font-headline mb-3 text-[10px] uppercase tracking-wider text-foreground/70">Contact</h4>
           <ul className="space-y-2 text-xs text-muted-foreground">
             <li>info@chauffeurskenya.com</li>
-            <li>+1 (972) 815-5863</li>
+            <li><a href="tel:+19728155863">+1 (972) 815-5863</a></li>
             <li>Mombasa, Kenya</li>
           </ul>
         </div>

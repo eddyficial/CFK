@@ -123,7 +123,7 @@ export default function QuotePage() {
             <Card className="bg-card/60 border-border/40">
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-2">Need it faster? Call directly</p>
-                <p className="text-lg font-bold font-headline gradient-text">+1 (972) 815-5863</p>
+                <a href="tel:+19728155863" className="text-lg font-bold font-headline gradient-text">+1 (972) 815-5863</a>
                 <p className="text-[10px] text-muted-foreground mt-0.5">David Owuori</p>
               </CardContent>
             </Card>

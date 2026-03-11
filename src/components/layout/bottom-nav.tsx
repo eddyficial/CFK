@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Ship, MapPin, Phone, Share2 } from 'lucide-react';
+import { Home, Ship, MapPin, Mail, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/services', label: 'Services', icon: Ship },
   { href: '/track', label: 'Track', icon: MapPin },
-  { href: '/contact', label: 'Contact', icon: Phone },
+  { href: '/contact', label: 'Contact', icon: Mail },
 ];
 
 export default function BottomNav() {
