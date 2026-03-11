@@ -5,39 +5,20 @@ import MapDisplay from './map-display';
 import RouteAnalysis from './route-analysis';
 import VesselDetails from './vessel-details';
 import { Skeleton } from '../ui/skeleton';
-import type { Container } from '@/data/containers';
+import { findContainer, type Container } from '@/data/containers';
 
 export default function TrackingDashboard({ containerId }: { containerId: string }) {
   const [loading, setLoading] = useState(true);
   const [container, setContainer] = useState<Container | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchContainer() {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(`/api/containers?containerNumber=${encodeURIComponent(containerId)}`);
-        if (!res.ok) {
-          if (res.status === 404) {
-            setError('Container not found. Please check the container number and try again.');
-          } else {
-            setError('Failed to fetch container data.');
-          }
-          return;
-        }
-        const data = await res.json();
-        setContainer(data);
-      } catch {
-        setError('Network error. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (containerId) {
-      fetchContainer();
-    }
+    // Simulate a short load for UX, then look up container from local data
+    const timer = setTimeout(() => {
+      const found = findContainer(containerId);
+      setContainer(found || null);
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
   }, [containerId]);
 
   if (loading) {
@@ -58,14 +39,14 @@ export default function TrackingDashboard({ containerId }: { containerId: string
     );
   }
 
-  if (error || !container) {
+  if (!container) {
     return (
       <div className="text-center py-20">
         <h2 className="text-2xl font-bold font-headline text-destructive mb-2">
           Container Not Found
         </h2>
         <p className="text-muted-foreground mb-4">
-          {error || 'No data available for this container.'}
+          No data available for &quot;{containerId}&quot;.
         </p>
         <p className="text-sm text-muted-foreground">
           Try one of these demo containers: <strong>MSKU1234567</strong>, <strong>CSLU7654321</strong>, <strong>TGHU9988776</strong>, <strong>HLBU5544332</strong>
@@ -107,7 +88,7 @@ export default function TrackingDashboard({ containerId }: { containerId: string
             data={{
               id: container.containerNumber,
               status: container.status,
-              location: `${container.currentLatitude.toFixed(4)}°, ${container.currentLongitude.toFixed(4)}°`,
+              location: `${container.currentLatitude.toFixed(4)}\u00B0, ${container.currentLongitude.toFixed(4)}\u00B0`,
               speed: container.speed > 0 ? `${container.speed} knots` : 'Stationary',
               eta: etaDate.toLocaleDateString('en-US', {
                 weekday: 'short',
