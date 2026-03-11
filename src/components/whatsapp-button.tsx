@@ -41,7 +41,7 @@ export default function WhatsAppButton() {
           <div className="p-4 bg-[#0b141a] min-h-[120px]">
             <div className="bg-[#1f2c34] rounded-lg rounded-tl-none p-3 max-w-[85%]">
               <p className="text-sm text-foreground">
-                Hello! Welcome to Chauffeurs Kenya Freight. How can I help you with your shipment today?
+                Hello! Welcome to Chauffeurs Freight Kenya. How can I help you with your shipment today?
               </p>
               <p className="text-[10px] text-muted-foreground mt-1 text-right">
                 {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

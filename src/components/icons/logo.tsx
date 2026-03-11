@@ -56,7 +56,7 @@ export function Logo(props: React.SVGProps<SVGSVGElement>) {
         fontWeight="bold"
         letterSpacing="0.05em"
       >
-        <tspan x="45" y="23.5">KENYA</tspan>
+        <tspan x="45" y="23.5">FREIGHT</tspan>
       </text>
       <text
         fill="#E84444"
@@ -67,7 +67,7 @@ export function Logo(props: React.SVGProps<SVGSVGElement>) {
         fontWeight="bold"
         letterSpacing="0.05em"
       >
-        <tspan x="45" y="35.5">FREIGHT</tspan>
+        <tspan x="45" y="35.5">KENYA</tspan>
       </text>
       <defs>
         <clipPath id="clip0_104_2">

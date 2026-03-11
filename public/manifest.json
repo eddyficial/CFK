@@ -1,6 +1,6 @@
 {
-  "name": "Chauffeurs Kenya Freight",
-  "short_name": "CKF",
+  "name": "Chauffeurs Freight Kenya",
+  "short_name": "CFK",
   "description": "Global freight tracking and logistics - Moving Dreams Across Continents",
   "start_url": "/CFK/",
   "scope": "/CFK/",
@@ -10,16 +10,16 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/CFK/icons/icon-192.svg",
+      "src": "/CFK/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/CFK/icons/icon-512.svg",
+      "src": "/CFK/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "categories": ["business", "logistics"]

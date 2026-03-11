@@ -47,7 +47,7 @@ export default function Footer() {
       <div className="container mt-12 pt-8 border-t border-border/20">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Chauffeurs Kenya Freight. All Rights Reserved.
+            &copy; {new Date().getFullYear()} Chauffeurs Freight Kenya. All Rights Reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <Link href="/services" className="hover:text-primary transition-colors">Privacy Policy</Link>
