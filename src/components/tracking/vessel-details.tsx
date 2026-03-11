@@ -1,10 +1,11 @@
+import React from 'react';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Anchor, Clock, Gauge, MapPin, Tag } from 'lucide-react';
+import { Anchor, Clock, Gauge, MapPin, Tag, Ship, Navigation } from 'lucide-react';
 import { Badge } from '../ui/badge';
 
 interface ContainerData {
@@ -13,6 +14,9 @@ interface ContainerData {
   location: string;
   speed: string;
   eta: string;
+  vessel?: string;
+  origin?: string;
+  destination?: string;
 }
 
 const statusConfig = {
@@ -20,7 +24,6 @@ const statusConfig = {
   'Docked': { color: 'bg-green-500', label: 'Docked' },
   'At Anchor': { color: 'bg-yellow-500', label: 'At Anchor' },
 };
-
 
 export default function VesselDetails({ data }: { data: ContainerData }) {
   const currentStatus = statusConfig[data.status] || { color: 'bg-gray-500', label: 'Unknown' };
@@ -42,6 +45,9 @@ export default function VesselDetails({ data }: { data: ContainerData }) {
             {currentStatus.label}
           </Badge>
         </div>
+        {data.vessel && <DetailItem icon={<Ship />} label="Vessel" value={data.vessel} />}
+        {data.origin && <DetailItem icon={<Navigation />} label="Origin" value={data.origin} />}
+        {data.destination && <DetailItem icon={<MapPin />} label="Destination" value={data.destination} />}
         <DetailItem icon={<MapPin />} label="Coordinates" value={data.location} />
         <DetailItem icon={<Gauge />} label="Speed" value={data.speed} />
         <DetailItem icon={<Clock />} label="ETA" value={data.eta} />
@@ -57,7 +63,7 @@ function DetailItem({ icon, label, value }: { icon: React.ReactNode; label: stri
         {React.cloneElement(icon as React.ReactElement, { className: 'h-5 w-5' })}
         <span>{label}</span>
       </div>
-      <span className="font-medium text-foreground">{value}</span>
+      <span className="font-medium text-foreground text-right max-w-[180px]">{value}</span>
     </div>
   );
 }

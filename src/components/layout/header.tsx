@@ -1,10 +1,8 @@
-
 'use client';
 
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { Logo } from '../icons/logo';
-import { UserNav } from '../auth/user-nav';
 
 export default function Header() {
   return (
@@ -15,13 +13,14 @@ export default function Header() {
         </Link>
         <nav className="hidden md:flex items-center space-x-2">
           <NavLink href="/" label="Home" />
-          <NavLink href="#" label="Services" />
+          <NavLink href="/services" label="Services" />
           <NavLink href="/track" label="Track" />
-          <NavLink href="#" label="Contact" />
+          <NavLink href="/contact" label="Contact" />
         </nav>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" className="hidden md:flex">Get a Quote</Button>
-          <UserNav />
+          <Button asChild className="hidden md:flex bg-primary hover:bg-primary/90">
+            <Link href="/quote">Get a Quote</Link>
+          </Button>
         </div>
       </div>
     </header>

@@ -15,16 +15,16 @@ export default function Footer() {
           <h4 className="font-bold font-headline mb-4">Quick Links</h4>
           <ul className="space-y-2">
             <li><Link href="/" className="text-sm text-muted-foreground hover:text-primary">Home</Link></li>
-            <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
-            <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Track Your Shipment</Link></li>
-            <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Get a Quote</Link></li>
+            <li><Link href="/services" className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
+            <li><Link href="/track" className="text-sm text-muted-foreground hover:text-primary">Track Your Shipment</Link></li>
+            <li><Link href="/quote" className="text-sm text-muted-foreground hover:text-primary">Get a Quote</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="font-bold font-headline mb-4">Legal</h4>
           <ul className="space-y-2">
-            <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
-            <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+            <li><Link href="/services" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+            <li><Link href="/services" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
           </ul>
         </div>
         <div>
@@ -37,7 +37,7 @@ export default function Footer() {
       </div>
       <div className="container text-center mt-8 pt-6 border-t border-border">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Chauffeurs Kenya Freight. All Rights Reserved.
+          &copy; {new Date().getFullYear()} Chauffeurs Kenya Freight. All Rights Reserved.
         </p>
       </div>
     </footer>

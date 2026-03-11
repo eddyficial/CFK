@@ -2,14 +2,12 @@ import TrackingDashboard from '@/components/tracking/tracking-dashboard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Suspense } from 'react';
 
-export default function DashboardPage({
+export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams?: {
-    containerId?: string;
-  };
+  searchParams: Promise<{ containerId?: string }>;
 }) {
-  const containerId = searchParams?.containerId;
+  const { containerId } = await searchParams;
 
   if (!containerId) {
     return (

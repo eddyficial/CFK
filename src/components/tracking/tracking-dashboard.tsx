@@ -5,65 +5,46 @@ import MapDisplay from './map-display';
 import RouteAnalysis from './route-analysis';
 import VesselDetails from './vessel-details';
 import { Skeleton } from '../ui/skeleton';
-import { predictETA, ETAPredictionOutput } from '@/ai/ai-eta-predictions';
-
-interface ContainerData {
-  id: string;
-  status: 'In Transit' | 'Docked' | 'At Anchor';
-  location: string;
-  speed: string;
-  eta: string;
-}
+import type { Container } from '@/data/containers';
 
 export default function TrackingDashboard({ containerId }: { containerId: string }) {
   const [loading, setLoading] = useState(true);
-  const [containerData, setContainerData] = useState<ContainerData | null>(null);
-  const [aiAnalysis, setAiAnalysis] = useState<string>('');
+  const [container, setContainer] = useState<Container | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function getETAPrediction() {
+    async function fetchContainer() {
       setLoading(true);
+      setError(null);
       try {
-        const input = {
-          containerNumber: containerId,
-          currentLocation: '14.48 N, 126.12 E',
-          destinationPort: 'Mombasa, Kenya',
-          historicalData: 'On-time for the last 3 voyages on this route.',
-        };
-        const prediction: ETAPredictionOutput = await predictETA(input);
-
-        // Map the AI output to the existing data structures
-        const statuses: ContainerData['status'][] = ['In Transit', 'Docked', 'At Anchor'];
-        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-
-        const newContainerData: ContainerData = {
-          id: containerId.toUpperCase(),
-          status: randomStatus,
-          location: input.currentLocation,
-          speed: '18.2 knots', // Placeholder speed
-          eta: prediction.estimatedTimeOfArrival,
-        };
-
-        setContainerData(newContainerData);
-        setAiAnalysis(prediction.routeOptimizations);
-      } catch (error) {
-        console.error('Error fetching ETA prediction:', error);
-        // Optionally set an error state to show in the UI
+        const res = await fetch(`/api/containers?containerNumber=${encodeURIComponent(containerId)}`);
+        if (!res.ok) {
+          if (res.status === 404) {
+            setError('Container not found. Please check the container number and try again.');
+          } else {
+            setError('Failed to fetch container data.');
+          }
+          return;
+        }
+        const data = await res.json();
+        setContainer(data);
+      } catch {
+        setError('Network error. Please try again.');
       } finally {
         setLoading(false);
       }
     }
 
     if (containerId) {
-      getETAPrediction();
+      fetchContainer();
     }
   }, [containerId]);
-  
+
   if (loading) {
     return (
       <div className="animate-pulse">
-        <h1 className="text-3xl font-bold font-headline mb-2"><Skeleton className="h-8 w-48" /></h1>
-        <p className="text-muted-foreground mb-6"><Skeleton className="h-5 w-64" /></p>
+        <Skeleton className="h-8 w-48 mb-2" />
+        <Skeleton className="h-5 w-64 mb-6" />
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <Skeleton className="h-[450px] w-full rounded-xl" />
@@ -77,21 +58,69 @@ export default function TrackingDashboard({ containerId }: { containerId: string
     );
   }
 
-  if (!containerData) {
-    return <div>Error loading container data. Please try again.</div>;
+  if (error || !container) {
+    return (
+      <div className="text-center py-20">
+        <h2 className="text-2xl font-bold font-headline text-destructive mb-2">
+          Container Not Found
+        </h2>
+        <p className="text-muted-foreground mb-4">
+          {error || 'No data available for this container.'}
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Try one of these demo containers: <strong>MSKU1234567</strong>, <strong>CSLU7654321</strong>, <strong>TGHU9988776</strong>, <strong>HLBU5544332</strong>
+        </p>
+      </div>
+    );
   }
+
+  const etaDate = new Date(container.eta);
+  const now = new Date();
+  const hoursRemaining = Math.max(0, Math.round((etaDate.getTime() - now.getTime()) / (1000 * 60 * 60)));
+  const daysRemaining = Math.floor(hoursRemaining / 24);
+
+  const analysis = container.status === 'Docked'
+    ? `Container ${container.containerNumber} has arrived at ${container.destinationPort} and is currently docked. Vessel ${container.vessel} completed the voyage from ${container.originPort} successfully.`
+    : container.status === 'At Anchor'
+    ? `Container ${container.containerNumber} aboard ${container.vessel} is currently at anchor near ${container.destinationPort}, awaiting berth assignment. Expected to dock within the next ${Math.min(hoursRemaining, 12)} hours.`
+    : `Container ${container.containerNumber} is in transit aboard ${container.vessel}, traveling at ${container.speed} knots from ${container.originPort} to ${container.destinationPort}. Estimated arrival in ${daysRemaining > 0 ? `${daysRemaining} days and ` : ''}${hoursRemaining % 24} hours. Current route conditions are favorable with no major weather disruptions anticipated.`;
 
   return (
     <div>
       <h1 className="text-3xl font-bold font-headline text-primary">Tracking Container</h1>
-      <p className="text-muted-foreground mb-6">Displaying real-time data for container {containerData.id}</p>
+      <p className="text-muted-foreground mb-6">
+        Real-time data for <strong>{container.containerNumber}</strong> aboard {container.vessel}
+      </p>
       <div className="grid gap-6 lg:grid-cols-3 items-start">
         <div className="lg:col-span-2 space-y-6">
-          <MapDisplay location={containerData.location} />
-          <RouteAnalysis analysis={aiAnalysis} />
+          <MapDisplay
+            latitude={container.currentLatitude}
+            longitude={container.currentLongitude}
+            route={container.route}
+            containerNumber={container.containerNumber}
+            destinationPort={container.destinationPort}
+          />
+          <RouteAnalysis analysis={analysis} />
         </div>
         <div className="lg:col-span-1">
-          <VesselDetails data={containerData} />
+          <VesselDetails
+            data={{
+              id: container.containerNumber,
+              status: container.status,
+              location: `${container.currentLatitude.toFixed(4)}°, ${container.currentLongitude.toFixed(4)}°`,
+              speed: container.speed > 0 ? `${container.speed} knots` : 'Stationary',
+              eta: etaDate.toLocaleDateString('en-US', {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              }),
+              vessel: container.vessel,
+              origin: container.originPort,
+              destination: container.destinationPort,
+            }}
+          />
         </div>
       </div>
     </div>

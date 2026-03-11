@@ -1,39 +1,50 @@
-import Image from 'next/image';
+'use client';
+
+import dynamic from 'next/dynamic';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default function MapDisplay({ location }: { location: string }) {
-  const mapImage = PlaceHolderImages.find(img => img.id === 'map-placeholder');
+const LeafletMap = dynamic(() => import('./leaflet-map'), {
+  ssr: false,
+  loading: () => <Skeleton className="h-[400px] w-full" />,
+});
 
+interface MapDisplayProps {
+  latitude: number;
+  longitude: number;
+  route?: { lat: number; lng: number }[];
+  containerNumber?: string;
+  destinationPort?: string;
+}
+
+export default function MapDisplay({
+  latitude,
+  longitude,
+  route,
+  containerNumber,
+  destinationPort,
+}: MapDisplayProps) {
   return (
     <Card className="overflow-hidden shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="font-headline">Live Map</CardTitle>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <MapPin className="h-4 w-4 text-primary" />
-          <span>{location}</span>
+          <span>
+            {latitude.toFixed(2)}°, {longitude.toFixed(2)}°
+          </span>
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="aspect-[16/9] relative">
-          {mapImage && (
-            <Image
-              src={mapImage.imageUrl}
-              alt={mapImage.description}
-              fill
-              className="object-cover"
-              data-ai-hint={mapImage.imageHint}
-            />
-          )}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative">
-              <div className="absolute h-6 w-6 bg-red-500 rounded-full animate-ping opacity-75"></div>
-              <div className="relative h-6 w-6 flex items-center justify-center">
-                 <div className="h-3 w-3 bg-red-600 rounded-full border-2 border-white"></div>
-              </div>
-            </div>
-          </div>
+        <div className="h-[400px]">
+          <LeafletMap
+            latitude={latitude}
+            longitude={longitude}
+            route={route}
+            containerNumber={containerNumber}
+            destinationPort={destinationPort}
+          />
         </div>
       </CardContent>
     </Card>
